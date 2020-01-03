@@ -1,0 +1,94 @@
+#include <bits/stdc++.h>
+using namespace std;
+#define ll long long int
+
+/** author Akshay Bist
+**/
+
+struct node {
+	int rank;
+	int data;
+	node *parent;
+};
+
+map <int, node*> hM;
+
+vector <pair<int, pair<int, int> > > edges;
+
+vector <pair<int, pair<int, int> > > answerEdges;
+
+void makeSet(int data) {
+	node *newNode = (struct node *)malloc(sizeof (struct node));
+	newNode->data = data;
+	newNode->parent = newNode;
+	newNode->rank = 0;
+	hM[data] = newNode;
+}
+
+node* findSetUtil(node *Node) {
+	if (Node->parent == Node) {
+		return Node;
+	}
+	Node->parent = findSetUtil(Node->parent);
+	return Node->parent;
+}
+
+int findSet(int data) {
+	return findSetUtil(hM[data])->data;
+}
+
+void unionSet(int a, int b) {
+	node *node1 = hM[a];
+	node *node2 = hM[b];
+	node *parent1 = findSetUtil(node1);
+	node *parent2 = findSetUtil(node2);
+
+	if (parent1->data != parent2->data) {
+		//mst->push_back(make_pair(a, b));
+		if (parent1->rank == parent2->rank) {
+			parent1->rank += 1;
+			parent2->parent = parent1;
+		} else if (parent1->rank > parent2->rank) {
+			parent2->parent = parent1;
+		} else {
+			parent1->parent = parent2;
+		}
+	}
+}
+
+void addEdge(int a, int b, int w) {
+	edges.push_back(make_pair(w, make_pair(a, b)));
+}
+
+bool mySort(pair<int, pair<int, int> > a, pair<int, pair<int, int> > b) {
+	return a.first < b.first;
+}
+
+int main() {
+	std::ios::sync_with_stdio(false);
+	int n, m, a, b, w;
+   	cin>>n>>m;
+   	for (int i = 1; i <= n; i++) {
+   		makeSet(i);
+   	}
+   	for (int i = 0; i < m; i++) {
+   		cin>>a>>b>>w;
+   		addEdge(a, b, w);
+   	}
+   	sort(edges.begin(), edges.end(), mySort);
+
+   	for (int i = 0; i < edges.size(); i++) {
+   		if (findSet(edges[i].second.first) != findSet(edges[i].second.second)) {
+   			answerEdges.push_back(make_pair(edges[i].first,
+   			make_pair(edges[i].second.first, edges[i].second.second)));
+   			unionSet(edges[i].second.first, edges[i].second.second);
+   		}
+   	}
+   	ll answer = 0;
+   	for (int i = 0; i < answerEdges.size(); i++) {
+   		answer += answerEdges[i].first;
+   		/*cout<<answerEdges[i].second.first<<" "<<answerEdges[i].second.second<<"\n";*/
+   	}
+   	cout<<answer<<"\n";
+    return 0;
+}
