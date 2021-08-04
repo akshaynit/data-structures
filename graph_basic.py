@@ -1,10 +1,3 @@
-# -*- coding: utf-8 -*-
-"""
-Created on Thu Mar  7 15:40:54 2019
-
-@author: AK389016
-"""
-
 import queue
 
 adjlist = dict()
