@@ -1,10 +1,3 @@
-# -*- coding: utf-8 -*-
-"""
-Created on Tue Dec 10 17:59:14 2019
-
-@author: AK389016
-"""
-
 from collections import defaultdict
 
 n, m = map(int, input().split(' '))
