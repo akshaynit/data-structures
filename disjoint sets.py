@@ -1,10 +1,3 @@
-# -*- coding: utf-8 -*-
-"""
-Created on Tue Nov 26 20:10:34 2019
-
-@author: AK389016
-"""
-
 #contains the parent of a given element
 parent = dict()
 
